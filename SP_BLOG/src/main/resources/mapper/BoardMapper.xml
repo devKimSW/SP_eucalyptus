@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eucalyptus.web.mapper.BoardMapper">
+
+    <select id="getBoardList" parameterType="String" resultType="com.eucalyptus.web.vo.Board">
+		SELECT 
+		       a.*
+		  FROM 
+		       (
+		        SELECT
+		               'BEST' AS TYPE
+		             , board.BOARD_NO
+		             , board.TITLE
+		          FROM TB_BOARD board
+		             , TB_CATEGORY cate
+		             , TB_USER usr
+		         WHERE usr.USER_NICKNAME = #{nicname}
+		           AND board.REGISTER_ID = usr.EMAIL
+		           AND board.REGISTER_ID = cate.USER_ID
+		           AND board.CATEGORY_NO = cate.CATEGORY_NO 
+		           AND cate.CATEGORY_NO = 1
+		           AND board.SECRET_YN = 'N'
+		           AND board.DELETE_YN = 'N'
+		         ORDER BY board.HITS DESC
+		         LIMIT 1                     
+		       ) a
+		UNION ALL
+		SELECT 
+		       b.*
+		  FROM 
+		       (
+		        SELECT 
+		               'RECENT' AS TYPE
+		             , board.BOARD_NO
+		             , board.TITLE
+		          FROM TB_BOARD board
+		             , TB_CATEGORY cate
+		             , TB_USER usr
+		         WHERE usr.USER_NICKNAME = #{nicname}
+		           AND board.REGISTER_ID = usr.EMAIL
+		           AND board.REGISTER_ID = cate.USER_ID
+		           AND board.CATEGORY_NO = cate.CATEGORY_NO                                                                                                                                                                                                                  
+		           AND cate.CATEGORY_NO = 1
+		           AND board.SECRET_YN = 'N'
+		           AND board.DELETE_YN = 'N'   
+		         ORDER BY board.REGISTER_DATE DESC
+		         LIMIT 4
+		       ) b
+	</select>
+
+</mapper>

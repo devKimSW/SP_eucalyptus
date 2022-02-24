@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eucalyptus.web.mapper.MainMapper">
+
+    <select id="getMainInfo" parameterType="String" resultType="com.eucalyptus.web.vo.MainInfo">
+		SELECT 
+		       cate.CATEGORY_NO 
+		     , cate.CATEGORY_NAME 
+		     , blog.BLOG_NAME 
+		     , blog.USER_NICKNAME 
+		     , blog.BLOG_DESCRIPTION 
+		     , blog.FAVICON_PATH 																										ㄹㅊㅅㅅ
+		  FROM TB_BLOG blog 
+		     , TB_USER usr
+		     , TB_CATEGORY cate
+		 WHERE usr.USER_NICKNAME = #{nicname}
+		   AND blog.USER_ID = usr.EMAIL
+		   AND blog.USER_ID = cate.USER_ID
+		 ORDER BY cate.GROUP_NO ASC, cate.GROUP_ORDER ASC
+	</select>
+
+</mapper>
